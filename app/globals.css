@@ -591,3 +591,14 @@ textarea:focus-visible {
     margin-top: 52px;
   }
 }
+
+.record-no-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  color: var(--paper-soft);
+  font-family: var(--font-data);
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  padding: 8px 2px;
+}

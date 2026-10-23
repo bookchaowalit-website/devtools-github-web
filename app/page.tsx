@@ -2,80 +2,7 @@
 
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-
-type Lens = "all" | "systems" | "tools" | "portfolio";
-
-type Repository = {
-  id: string;
-  name: string;
-  owner: string;
-  role: string;
-  description: string;
-  language: string;
-  status: "Pinned" | "Active" | "Draft";
-  lens: Exclude<Lens, "all">;
-  proof: string;
-  url: string;
-};
-
-const seedRepositories: Repository[] = [
-  {
-    id: "solo-empire",
-    name: "solo-empire",
-    owner: "bookchaowalit",
-    role: "Operating system",
-    description: "A personal control plane for projects, knowledge, tasks, and durable operating context.",
-    language: "TypeScript · Python",
-    status: "Pinned",
-    lens: "systems",
-    proof: "The system this shelf is part of",
-    url: "https://github.com/bookchaowalit/solo-empire",
-  },
-  {
-    id: "devhub",
-    name: "bookchaowalit-devhub-frontend",
-    owner: "bookchaowalit-website",
-    role: "API developer portal",
-    description: "A catalog and browser playground for MCP servers exposed by the portfolio ecosystem.",
-    language: "Next.js · TypeScript",
-    status: "Active",
-    lens: "tools",
-    proof: "An interface for exploring developer capability",
-    url: "https://github.com/bookchaowalit-website/bookchaowalit-devhub-frontend",
-  },
-  {
-    id: "analytics",
-    name: "bookchaowalit-analytics-dashboard-frontend",
-    owner: "bookchaowalit-website",
-    role: "Signal reading instrument",
-    description: "A local surface for reading a performance trace without pretending to be a connected analytics SaaS.",
-    language: "Next.js · TypeScript",
-    status: "Active",
-    lens: "portfolio",
-    proof: "A product-specific interface, not a starter dashboard",
-    url: "https://github.com/bookchaowalit-website/bookchaowalit-analytics-dashboard-frontend",
-  },
-];
-
-const lensLabels: Record<Lens, string> = {
-  all: "All records",
-  systems: "Systems",
-  tools: "Tools",
-  portfolio: "Portfolio pieces",
-};
-
-const blankDraft = {
-  name: "",
-  owner: "",
-  role: "",
-  description: "",
-  language: "",
-  url: "",
-};
-
-function makeId(name: string) {
-  return `${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now()}`;
-}
+import { blankDraft, filterRepositories, lensLabels, nextSelectedId, recordFromDraft, seedRepositories, type Lens } from "@/lib/github-shelf";
 
 export default function Home() {
   const [repositories, setRepositories] = useState(seedRepositories);
@@ -85,14 +12,7 @@ export default function Home() {
   const [draft, setDraft] = useState(blankDraft);
   const [copied, setCopied] = useState(false);
 
-  const filtered = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    return repositories.filter((repository) => {
-      const matchesLens = lens === "all" || repository.lens === lens;
-      const haystack = `${repository.name} ${repository.owner} ${repository.role} ${repository.description} ${repository.language}`.toLowerCase();
-      return matchesLens && (!normalized || haystack.includes(normalized));
-    });
-  }, [lens, query, repositories]);
+  const filtered = useMemo(() => filterRepositories(repositories, lens, query), [lens, query, repositories]);
 
   const selected = filtered.find((repository) => repository.id === selectedId) ?? filtered[0] ?? null;
 
@@ -102,19 +22,8 @@ export default function Home() {
 
   function addRepository(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!draft.name.trim() || !draft.role.trim()) return;
-    const repository: Repository = {
-      id: makeId(draft.name),
-      name: draft.name.trim(),
-      owner: draft.owner.trim() || "Unspecified owner",
-      role: draft.role.trim(),
-      description: draft.description.trim() || "A repository saved for a closer look.",
-      language: draft.language.trim() || "Not recorded",
-      status: "Draft",
-      lens: "tools",
-      proof: "A local record waiting for evidence",
-      url: draft.url.trim() || "#",
-    };
+    const repository = recordFromDraft(draft);
+    if (!repository) return;
     setRepositories((current) => [repository, ...current]);
     setSelectedId(repository.id);
     setDraft(blankDraft);
@@ -133,7 +42,7 @@ export default function Home() {
 
   function removeRepository(id: string) {
     setRepositories((current) => current.filter((repository) => repository.id !== id));
-    if (selectedId === id) setSelectedId(filtered.find((repository) => repository.id !== id)?.id ?? "");
+    setSelectedId((current) => nextSelectedId(filtered, current, id));
   }
 
   return (
@@ -227,7 +136,11 @@ export default function Home() {
                   <div><dt>Record</dt><dd>{selected.status === "Draft" ? "Local draft" : "Curated shelf item"}</dd></div>
                 </dl>
                 <div className="record-actions">
-                  <a href={selected.url} target="_blank" rel="noreferrer">Open repository <span aria-hidden="true">↗</span></a>
+                  {selected.url ? (
+                    <a href={selected.url} target="_blank" rel="noreferrer">Open repository <span aria-hidden="true">↗</span></a>
+                  ) : (
+                    <span className="record-no-link">No public link</span>
+                  )}
                   <button type="button" onClick={copyRecord}>{copied ? "Record copied" : "Copy record"}</button>
                   <button type="button" className="remove-action" onClick={() => removeRepository(selected.id)}>Remove</button>
                 </div>
