@@ -92,7 +92,7 @@ textarea:focus-visible {
   gap: 10px;
   color: var(--paper);
   font-family: var(--font-data);
-  font-size: 0.72rem;
+  font-size: .75rem;
   letter-spacing: 0.08em;
   text-decoration: none;
   text-transform: uppercase;
@@ -110,7 +110,7 @@ textarea:focus-visible {
 .room-footer {
   color: var(--paper-soft);
   font-family: var(--font-data);
-  font-size: 0.68rem;
+  font-size: .75rem;
   letter-spacing: 0.04em;
 }
 
@@ -160,7 +160,7 @@ textarea:focus-visible {
 .shelf-count span {
   color: var(--paper-soft);
   font-family: var(--font-data);
-  font-size: 0.62rem;
+  font-size: .75rem;
   line-height: 1.35;
   text-transform: uppercase;
 }
@@ -178,7 +178,7 @@ textarea:focus-visible {
   gap: 8px;
   color: var(--paper-soft);
   font-family: var(--font-data);
-  font-size: 0.65rem;
+  font-size: .75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -225,7 +225,7 @@ textarea:focus-visible {
   color: var(--paper-soft);
   cursor: pointer;
   font-family: var(--font-data);
-  font-size: 0.66rem;
+  font-size: .75rem;
   letter-spacing: 0.03em;
   padding: 8px 14px;
   text-decoration: none;
@@ -262,7 +262,7 @@ textarea:focus-visible {
   padding-bottom: 14px;
   color: var(--paper-soft);
   font-family: var(--font-data);
-  font-size: 0.64rem;
+  font-size: .75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -314,7 +314,7 @@ textarea:focus-visible {
 
 .index-number {
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: .75rem;
 }
 
 .index-name {
@@ -328,12 +328,12 @@ textarea:focus-visible {
 .index-role {
   grid-column: 2;
   color: var(--muted);
-  font-size: 0.63rem;
+  font-size: .75rem;
 }
 
 .empty-index {
   color: var(--paper-soft);
-  font-size: 0.72rem;
+  font-size: .75rem;
   line-height: 1.6;
 }
 
@@ -343,7 +343,7 @@ textarea:focus-visible {
   padding-top: 18px;
   border-top: 1px solid var(--line);
   color: var(--paper-soft);
-  font-size: 0.7rem;
+  font-size: .75rem;
 }
 
 .add-record summary {
@@ -363,7 +363,7 @@ textarea:focus-visible {
   display: grid;
   gap: 5px;
   color: var(--muted);
-  font-size: 0.6rem;
+  font-size: .75rem;
   text-transform: uppercase;
 }
 
@@ -390,7 +390,7 @@ textarea:focus-visible {
 .record-topline {
   color: var(--signal);
   font-family: var(--font-data);
-  font-size: 0.67rem;
+  font-size: .75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -402,7 +402,7 @@ textarea:focus-visible {
 .record-owner {
   margin: 66px 0 16px;
   color: var(--paper-soft);
-  font-size: 0.7rem;
+  font-size: .75rem;
 }
 
 .record-sheet h2 {
@@ -420,7 +420,7 @@ textarea:focus-visible {
   margin: 20px 0 0;
   color: var(--signal);
   font-family: var(--font-data);
-  font-size: 0.74rem;
+  font-size: .75rem;
   text-transform: uppercase;
 }
 
@@ -443,7 +443,7 @@ textarea:focus-visible {
 
 .record-proof span {
   color: var(--paper-soft);
-  font-size: 0.61rem;
+  font-size: .75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -468,7 +468,7 @@ textarea:focus-visible {
 
 .record-meta dt {
   color: var(--paper-soft);
-  font-size: 0.61rem;
+  font-size: .75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -509,7 +509,7 @@ textarea:focus-visible {
 
 .empty-stage span {
   color: var(--paper-soft);
-  font-size: 0.7rem;
+  font-size: .75rem;
 }
 
 .room-footer {
@@ -598,7 +598,7 @@ textarea:focus-visible {
   min-height: 38px;
   color: var(--paper-soft);
   font-family: var(--font-data);
-  font-size: 0.66rem;
+  font-size: .75rem;
   letter-spacing: 0.03em;
   padding: 8px 2px;
 }
