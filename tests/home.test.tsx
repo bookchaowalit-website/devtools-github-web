@@ -26,7 +26,7 @@ describe("shelf page", () => {
     expect(html).toContain("Showing 3 of");
     expect(html).toContain("in Tools for “typescript”");
     expect(html).toContain('href="/?q=typescript"');
-    expect(html).toContain('href="/?lens=tools">Clear');
+    expect(html).toContain('href="/?lens=tools#rs-search-q">Clear');
   });
 
   it("ignores an unknown kind and offers a way back when nothing matches", async () => {
