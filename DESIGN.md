@@ -43,6 +43,11 @@ components:
     padding: "8px 14px"
 ---
 
+> **Current look (2026-11-19):** the shelf uses the shared **Reader shell** (`READER.md`): Geist, light and dark, a
+> searchable list with kind chips and one article page per record with previous/next. The "reading room" notes below
+> are the earlier look, kept for history; its palette and Space fonts are no longer shipped.
+
+
 # Design System: Repository Reading Room
 
 ## Overview

@@ -5,7 +5,7 @@
 
 ## What it is
 
-A client-only shelf of three hand-written repository records (one private, so it carries no link) with search, lens filters and a local draft form. Records live in React state only; there is no GitHub API call.
+A server-rendered shelf of seven hand-written repository records (one private, so it carries no link) with search, kind filters and one page per record. There is no GitHub API call.
 
 ## Who it is for
 
@@ -14,14 +14,15 @@ A portfolio visitor who wants context on a few repositories before clicking thro
 ## What works today
 
 1. Search name, owner, role, description and language; filter by lens (Systems, Tools, Portfolio pieces).
-2. Open a record to read its role, description, proof line and language; open its public GitHub page, or see "No public link" for a private repository.
-3. Place a new record (name and role required). Only http(s) links are kept; anything else is dropped. Copy a record to the clipboard or remove it.
+2. Open a record (`/repos/<id>`) to read its role, description, why it is on the shelf and its language; open its public GitHub
+   page, or read that a private repository has no public link. Previous/next links walk the shelf.
+3. The visitor draft form, Copy and Remove were removed on 2026-11-19 (2026-11-11 review): they changed only this visit's
+   state and vanished on reload without saying so.
 4. Front-end and server errors go to Sentry (errors only, personal data stripped) when `NEXT_PUBLIC_SENTRY_DSN` is set.
 
 ## What does not work (and must not be claimed)
 
 - No GitHub API, real-time data, stars, commits or contribution activity (removed from the portfolio card in the 2026-10 review).
-- Nothing is saved: added or removed records reset on reload.
 - No MCP route (the unused GitHub relay route was removed on 2026-10-15).
 
 ## Live URL and deploy state

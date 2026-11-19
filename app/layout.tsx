@@ -1,36 +1,28 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Space_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
+import { SITE } from "@/components/shelf-views";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
-const spaceMono = Space_Mono({ variable: "--font-space-mono", subsets: ["latin"], weight: ["400", "700"] });
+// The font variable sits on <html>: the Reader shell tokens live on :root and read it from there.
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+
+const description = "A curated repository shelf with context before the click.";
 
 export const metadata: Metadata = {
-  title: "GitHub Highlights | Bookchaowalit",
-  description: "A curated repository shelf with context before the click.",
-  keywords: ["github", "portfolio"],
+  title: { default: "GitHub shelf | Bookchaowalit", template: "%s | GitHub shelf" },
+  description,
   authors: [{ name: "Bookchaowalit", url: "https://bookchaowalit.com" }],
   creator: "Bookchaowalit",
-  metadataBase: new URL("https://bookchaowalit.com"),
-  openGraph: {
-    type: "website",
-    title: "GitHub Highlights | Bookchaowalit",
-    description: "A curated repository shelf with context before the click.",
-    siteName: "Bookchaowalit",
-  },
+  metadataBase: new URL(SITE),
+  alternates: { canonical: "/" },
+  openGraph: { type: "website", title: "GitHub shelf | Bookchaowalit", description, siteName: "Bookchaowalit" },
   robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
-      <body className="antialiased">
-        <Analytics />
-        <SpeedInsights />
-        {children}
-      </body>
+    <html lang="en" className={geistSans.variable}>
+      <body>{children}</body>
     </html>
   );
 }
