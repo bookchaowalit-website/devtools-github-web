@@ -60,6 +60,16 @@ describe("repository page", () => {
     expect(await generateMetadata({ params: Promise.resolve({ id: "nope" }) })).toEqual({});
     await expect(RepositoryPage({ params: Promise.resolve({ id: "nope" }) })).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404|NEXT_NOT_FOUND/);
   });
+
+  it("gives each repository page its own share preview", async () => {
+    const metadata = await generateMetadata({ params: Promise.resolve({ id: "devhub" }) });
+    const repository = seedRepositories.find((item) => item.id === "devhub")!;
+    expect(metadata.openGraph).toMatchObject({
+      title: repository.name + " | GitHub shelf",
+      description: repository.description,
+      url: "/repos/devhub",
+    });
+  });
 });
 
 describe("site", () => {
