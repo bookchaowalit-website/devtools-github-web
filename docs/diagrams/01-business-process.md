@@ -9,8 +9,9 @@ Last reviewed: 2026-11-28 · commit `cd852ed`
 ```mermaid
 flowchart LR
   EDIT["Author edits lib/github-shelf.ts seedRepositories"] --> PR["push or PR to main"]
-  PR --> CI["GitHub CI: lint, typecheck, tests with coverage gate, build, security scan"]
-  CI --> BUILD["next build: prebuild every /repos/id"]
+  PR --> CI["GitHub CI: lint, typecheck, tests with coverage gate, build, security scan (no deploy job)"]
+  PR -.->|"push to main, separate path"| VDEP["Vercel deploy: CLI, Git link points to old repo [ต้องยืนยัน]"]
+  CI --> BUILD["next build in CI: prebuild every /repos/id"]
   V["Visitor browser"] --> SHELF["GET / ?q= ?lens= (rendered per request, Reader shell)"]
   SEED["seedRepositories (7 records)"] --> SHELF
   SHELF --> FILT["filterRepositories: lens + every query word in name, owner, role, description, language"]
@@ -22,7 +23,8 @@ flowchart LR
   LINK -->|"private"| NOLINK["text: no public link"]
   REC --> NAV["previous / next record"]
   V -->|"/more-projects"| REDIR["308 redirect to bookchaowalit.com"]
-  SHELF -.->|"errors only, if DSN set"| SENTRY["Sentry (PII scrubbed)"]
+  SHELF -.->|"browser and server errors only, if DSN set"| SENTRY["Sentry (request, user, breadcrumbs, extra, URL queries removed; error text otherwise sent)"]
+  REC -.-> SENTRY
 ```
 
 Sources: `lib/github-shelf.ts`, `components/shelf-views.tsx`, `app/page.tsx`, `app/repos/[id]/page.tsx`, `next.config.ts`, `lib/sentry.ts`, `.github/workflows/ci.yml`, `README.md`, `PRODUCT.md`
@@ -32,14 +34,14 @@ Sources: `lib/github-shelf.ts`, `components/shelf-views.tsx`, `app/page.tsx`, `a
 - ข้อมูลทุกรายการเขียนมือและตรวจเทียบ GitHub ด้วยคน ณ วันที่แก้ (คอมเมนต์ในโค้ด: ตรวจ 2026-11-19); ไม่มีขั้นตอนอัตโนมัติ sync กับ GitHub
 - ไม่มี API route และไม่มี MCP route (ถอนออก 2026-10-15)
 - ไม่มี workflow deploy ใน repo; ตาม PRODUCT.md (2026-10-23) deploy ด้วย Vercel CLI และ Git link ชี้ repo เก่า [ต้องยืนยัน] สถานะวันนี้
-- `NEXT_PUBLIC_SENTRY_DSN` บน production: [ต้องยืนยัน]
+- `NEXT_PUBLIC_SENTRY_DSN` บน production: [ต้องยืนยัน]; เมื่อเปิด Sentry (browser: `instrumentation-client.ts`, server: `instrumentation.ts` + `onRequestError`) `beforeSend` ใน `lib/sentry.ts` ลบ request, user, breadcrumbs, extra, contexts นอก platform, ตัด query/hash และลบ frame vars แต่ไม่ได้กรองข้อมูลอื่นในข้อความ error
 
 ## To-Be (จาก PRODUCT.md §Live URL and deploy state)
 
 ```mermaid
 flowchart LR
-  PUSH["push to main"] --> CI["GitHub CI"]
-  CI --> GIT["Vercel Git link to devtools-github-web"]
+  PUSH["push to main"] --> CI["GitHub CI (checks only)"]
+  PUSH --> GIT["Vercel Git link to devtools-github-web (not gated by CI unless Deployment Checks set [ต้องยืนยัน])"]
   GIT --> LIVE["github.bookchaowalit.com runs latest main"]
 ```
 
